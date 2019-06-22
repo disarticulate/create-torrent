@@ -1,37 +1,39 @@
-var createTorrent = require('../')
-var fixtures = require('webtorrent-fixtures')
-var fs = require('fs')
-var parseTorrent = require('parse-torrent')
-var path = require('path')
-var sha1 = require('simple-sha1')
-var test = require('tape')
+const fixtures = require('webtorrent-fixtures')
+const fs = require('fs')
+const parseTorrent = require('parse-torrent')
+const path = require('path')
+const sha1 = require('simple-sha1')
+const test = require('tape')
+const createTorrent = require('../')
 
-test('create multi file torrent with array of mixed types', function (t) {
+test('create multi file torrent with array of mixed types', t => {
   t.plan(20)
 
-  var number11Path = path.join(fixtures.lotsOfNumbers.contentPath, 'big numbers', '11.txt')
-  var number10Path = path.join(fixtures.lotsOfNumbers.contentPath, 'big numbers', '10.txt')
-  var numbersPath = fixtures.numbers.contentPath
+  const number11Path = path.join(fixtures.lotsOfNumbers.contentPath, 'big numbers', '11.txt')
+  const number10Path = path.join(fixtures.lotsOfNumbers.contentPath, 'big numbers', '10.txt')
+  const numbersPath = fixtures.numbers.contentPath
 
-  var stream = fs.createReadStream(number10Path)
+  const stream = fs.createReadStream(number10Path)
   stream.name = '10.txt'
 
   // Note: Order should be preserved
-  var input = [ number11Path, stream, numbersPath ]
+  const input = [ number11Path, stream, numbersPath ]
 
-  var startTime = Date.now()
+  const startTime = Date.now()
   createTorrent(input, {
     name: 'multi',
-    pieceLength: 32768, // force piece length to 32KB so info-hash will
-                        // match what transmission generated, since we use
-                        // a different algo for picking piece length
 
-    private: false      // also force `private: false` to match transmission
+    // force piece length to 32KB so info-hash will
+    // match what transmission generated, since we use
+    // a different algo for picking piece length
+    pieceLength: 32768,
 
-  }, function (err, torrent) {
+    private: false // also force `private: false` to match transmission
+
+  }, (err, torrent) => {
     t.error(err)
 
-    var parsedTorrent = parseTorrent(torrent)
+    const parsedTorrent = parseTorrent(torrent)
 
     t.equals(parsedTorrent.name, 'multi')
 

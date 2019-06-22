@@ -1,4 +1,4 @@
-# create-torrent [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url] [![Greenkeeper badge][greenkeeper-image]][greenkeeper-url]
+# create-torrent [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]
 
 [travis-image]: https://img.shields.io/travis/webtorrent/create-torrent/master.svg
 [travis-url]: https://travis-ci.org/webtorrent/create-torrent
@@ -8,12 +8,8 @@
 [downloads-url]: https://npmjs.org/package/create-torrent
 [standard-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
 [standard-url]: https://standardjs.com
-[greenkeeper-image]: https://badges.greenkeeper.io/webtorrent/create-torrent.svg
-[greenkeeper-url]: https://greenkeeper.io/
 
 #### Create .torrent files
-
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/create-torrent.svg)](https://saucelabs.com/u/create-torrent)
 
 ![creation](https://raw.githubusercontent.com/webtorrent/create-torrent/master/img.jpg)
 
@@ -41,8 +37,9 @@ createTorrent('/path/to/folder', function (err, torrent) {
 })
 ```
 
-A reasonable piece length (~1024 pieces) will automatically be selected for the .torrent
-file, or you can override it if you want a different size (See API docs below).
+A reasonable piece length (approx. 1024 pieces) will automatically be selected
+for the .torrent file, or you can override it if you want a different size (See
+API docs below).
 
 ### api
 

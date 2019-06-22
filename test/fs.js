@@ -1,18 +1,18 @@
-var createTorrent = require('../')
-var fixtures = require('webtorrent-fixtures')
-var parseTorrent = require('parse-torrent')
-var path = require('path')
-var sha1 = require('simple-sha1')
-var test = require('tape')
+const fixtures = require('webtorrent-fixtures')
+const parseTorrent = require('parse-torrent')
+const path = require('path')
+const sha1 = require('simple-sha1')
+const test = require('tape')
+const createTorrent = require('../')
 
-test('create single file torrent', function (t) {
+test('create single file torrent', t => {
   t.plan(11)
 
-  var startTime = Date.now()
-  createTorrent(fixtures.leaves.contentPath, function (err, torrent) {
+  const startTime = Date.now()
+  createTorrent(fixtures.leaves.contentPath, (err, torrent) => {
     t.error(err)
 
-    var parsedTorrent = parseTorrent(torrent)
+    const parsedTorrent = parseTorrent(torrent)
 
     t.equals(parsedTorrent.name, 'Leaves of Grass by Walt Whitman.epub')
 
@@ -58,34 +58,35 @@ test('create single file torrent', function (t) {
   })
 })
 
-test('create single file torrent from buffer', function (t) {
+test('create single file torrent from buffer', t => {
   t.plan(1)
 
-  createTorrent(Buffer.from('blah'), { name: 'blah.txt' }, function (err, torrent) {
+  createTorrent(Buffer.from('blah'), { name: 'blah.txt' }, (err, torrent) => {
     t.error(err)
     try {
       parseTorrent(torrent)
     } catch (err) {
-      t.fail('failed to parse created torrent: ' + err.message)
+      t.fail(`failed to parse created torrent: ${err.message}`)
     }
   })
 })
 
-test('create multi file torrent', function (t) {
+test('create multi file torrent', t => {
   t.plan(16)
 
-  var startTime = Date.now()
+  const startTime = Date.now()
   createTorrent(fixtures.numbers.contentPath, {
-    pieceLength: 32768, // force piece length to 32KB so info-hash will
-                        // match what transmission generated, since we use
-                        // a different algo for picking piece length
+    // force piece length to 32KB so info-hash will
+    // match what transmission generated, since we use
+    // a different algo for picking piece length
+    pieceLength: 32768,
 
-    private: false      // also force `private: false` to match transmission
+    private: false // also force `private: false` to match transmission
 
-  }, function (err, torrent) {
+  }, (err, torrent) => {
     t.error(err)
 
-    var parsedTorrent = parseTorrent(torrent)
+    const parsedTorrent = parseTorrent(torrent)
 
     t.equals(parsedTorrent.name, 'numbers')
 
@@ -115,21 +116,22 @@ test('create multi file torrent', function (t) {
   })
 })
 
-test('create multi file torrent with nested directories', function (t) {
+test('create multi file torrent with nested directories', t => {
   t.plan(21)
 
-  var startTime = Date.now()
+  const startTime = Date.now()
   createTorrent(fixtures.lotsOfNumbers.contentPath, {
-    pieceLength: 32768, // force piece length to 32KB so info-hash will
-                        // match what transmission generated, since we use
-                        // a different algo for picking piece length
+    // force piece length to 32KB so info-hash will
+    // match what transmission generated, since we use
+    // a different algo for picking piece length
+    pieceLength: 32768,
 
-    private: false      // also force `private: false` to match transmission
+    private: false // also force `private: false` to match transmission
 
-  }, function (err, torrent) {
+  }, (err, torrent) => {
     t.error(err)
 
-    var parsedTorrent = parseTorrent(torrent)
+    const parsedTorrent = parseTorrent(torrent)
 
     t.equals(parsedTorrent.name, 'lots-of-numbers')
 
@@ -168,28 +170,30 @@ test('create multi file torrent with nested directories', function (t) {
   })
 })
 
-test('create multi file torrent with array of paths', function (t) {
+test('create multi file torrent with array of paths', t => {
   t.plan(20)
 
-  var number10Path = path.join(fixtures.lotsOfNumbers.contentPath, 'big numbers', '10.txt')
-  var number11Path = path.join(fixtures.lotsOfNumbers.contentPath, 'big numbers', '11.txt')
-  var numbersPath = fixtures.numbers.contentPath
+  const number10Path = path.join(fixtures.lotsOfNumbers.contentPath, 'big numbers', '10.txt')
+  const number11Path = path.join(fixtures.lotsOfNumbers.contentPath, 'big numbers', '11.txt')
+  const numbersPath = fixtures.numbers.contentPath
 
-  var input = [ number10Path, number11Path, numbersPath ]
+  const input = [ number10Path, number11Path, numbersPath ]
 
-  var startTime = Date.now()
+  const startTime = Date.now()
   createTorrent(input, {
     name: 'multi',
-    pieceLength: 32768, // force piece length to 32KB so info-hash will
-                        // match what transmission generated, since we use
-                        // a different algo for picking piece length
 
-    private: false      // also force `private: false` to match transmission
+    // force piece length to 32KB so info-hash will
+    // match what transmission generated, since we use
+    // a different algo for picking piece length
+    pieceLength: 32768,
 
-  }, function (err, torrent) {
+    private: false // also force `private: false` to match transmission
+
+  }, (err, torrent) => {
     t.error(err)
 
-    var parsedTorrent = parseTorrent(torrent)
+    const parsedTorrent = parseTorrent(torrent)
 
     t.equals(parsedTorrent.name, 'multi')
 
